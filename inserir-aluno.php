@@ -1,11 +1,13 @@
 <?php
 
+use Alura\Pdo\Domain\Model\Student;
+use Alura\Pdo\Infrastructure\Persistence\ConnectionCreator;
+
 require_once 'vendor/autoload.php';
 
-$databasePath = __DIR__ . '/banco.sqlite';
-$pdo = new PDO('sqlite:' . $databasePath);
+$pdo = ConnectionCreator::createConnection();
 
-$student = new Alura\Pdo\Domain\Model\Student(
+$student = new Student(
     null,
     "SQLInjectionAttack', ''); DROP TABLE students; --",
     new \DateTimeImmutable('1980-01-01')
@@ -18,7 +20,7 @@ $statement->bindValue(':name', $student->name());
 $statement->bindValue(':birth_date', $student->birthDate()->format('Y-m-d'));
 
 if ($statement->execute()) {
-    echo "Aluno '{$student->name()}' inseridocom sucesso!";
+    echo "Aluno '{$student->name()}' inserido com sucesso!";
 }
 
 //var_dump($statement);
