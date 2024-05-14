@@ -36,4 +36,17 @@ class Student
             ->diff(new \DateTimeImmutable())
             ->y;
     }
+
+    public function defineId(int $id): void
+    {
+        if (!is_null($this->id)) {
+            throw new \DomainException('Só é possível definir a ID uma vez');
+        }
+        $this->id = $id;
+    }
+
+    public function changeName(string $name): void
+    {
+        $this->name = $name;
+    }
 }
