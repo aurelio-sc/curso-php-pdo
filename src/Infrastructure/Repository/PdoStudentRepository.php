@@ -35,7 +35,7 @@ class PdoStudentRepository implements StudentRepository
 
     public function hydrateStudentList(\PDOStatement $statement):array
     {
-        $studentDataList = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $studentDataList = $statement->fetchAll();
         $studentList = [];
         
         foreach ($studentDataList as $studentData) {
@@ -70,7 +70,8 @@ class PdoStudentRepository implements StudentRepository
     public function insert(Student $student):bool
     {
         $insertQuery = 'INSERT INTO students (name, birth_date) VALUES (:name, :birth_date)';
-        $statement = $this->connection->prepare($insertQuery);        
+        $statement = $this->connection->prepare($insertQuery);
+        
         $statement->bindValue(':name', $student->name());
         $statement->bindValue(':birth_date', $student->birthDate()->format('Y-m-d'));
         $success = $statement->execute();
